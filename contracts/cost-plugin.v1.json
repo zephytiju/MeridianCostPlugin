@@ -1,0 +1,125 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meridian.example/contracts/cost-plugin.v1.json",
+  "title": "Meridian Cost Plugin V1 compatibility evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "formatVersion",
+    "package",
+    "version",
+    "repository",
+    "plugin",
+    "dependencies",
+    "catalogs",
+    "resources",
+    "apis",
+    "pricingModels",
+    "design",
+    "boundaries"
+  ],
+  "properties": {
+    "formatVersion": {"const": "meridian.cost.plugin.v1"},
+    "package": {"const": "meridian-plugin-cost"},
+    "version": {"const": "1.0.0"},
+    "repository": {"const": "zephytiju/MeridianPluginCost"},
+    "plugin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "contract", "core"],
+      "properties": {
+        "id": {"const": "cost"},
+        "contract": {"const": "1.0.0"},
+        "core": {"const": "1.x"}
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["usage"],
+      "properties": {
+        "usage": {"const": "meridian-plugin-usage==1.0.0"}
+      }
+    },
+    "catalogs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owned", "used"],
+      "properties": {
+        "owned": {"const": []},
+        "used": {"const": ["evidence", "structured"]}
+      }
+    },
+    "resources": {
+      "const": [
+        "structured:cost.calculations",
+        "structured:cost.rate_cards",
+        "structured:cost.records"
+      ]
+    },
+    "apis": {
+      "const": [
+        "allocation",
+        "calculation",
+        "evidence",
+        "pricing",
+        "query",
+        "rate-card"
+      ]
+    },
+    "pricingModels": {
+      "const": [
+        "commitment_credit",
+        "flat_unit",
+        "graduated_tier",
+        "minimum_charge",
+        "volume_tier"
+      ]
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hldRevision",
+        "catalogRevision",
+        "adapterRevision",
+        "kafkaStreamingRevision",
+        "constructsRevision",
+        "costLldRevision"
+      ],
+      "properties": {
+        "hldRevision": {"const": 56},
+        "catalogRevision": {"const": 70},
+        "adapterRevision": {"const": 24},
+        "kafkaStreamingRevision": {"const": 6},
+        "constructsRevision": {"const": 45},
+        "costLldRevision": {"const": 16}
+      }
+    },
+    "boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "service",
+        "privateDatabase",
+        "engineSelection",
+        "engineProvisioning",
+        "credentials",
+        "nativeQuery",
+        "usageStorageAccess",
+        "catalogOwnership"
+      ],
+      "properties": {
+        "service": {"const": false},
+        "privateDatabase": {"const": false},
+        "engineSelection": {"const": false},
+        "engineProvisioning": {"const": false},
+        "credentials": {"const": false},
+        "nativeQuery": {"const": false},
+        "usageStorageAccess": {"const": false},
+        "catalogOwnership": {"const": false}
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0",
+  "formatVersion": "meridian.cost.golden.v1",
+  "vectors": {
+    "allocationFingerprint": "sha256:7045d491bdb486a2a62a15b2861ebc88e5c5d2032125b9ab79c53dd306b58405",
+    "allocationShares": [
+      {
+        "amount": "10.33",
+        "dimensions": {
+          "team": "alpha"
+        },
+        "sourceFingerprint": "sha256:3464267b69f30c1ac348c066c5056f536fbdc68d1af7d2d9d8d14864132b7a81",
+        "weight": "2"
+      },
+      {
+        "amount": "5.17",
+        "dimensions": {
+          "team": "beta"
+        },
+        "sourceFingerprint": "sha256:3464267b69f30c1ac348c066c5056f536fbdc68d1af7d2d9d8d14864132b7a81",
+        "weight": "1"
+      }
+    ],
+    "bundleFingerprint": "sha256:6528c545348385ff80c9a1a91be8590147efff9a1db904ff9497ce902c61b6c2",
+    "price": {
+      "adjustmentTotal": "0",
+      "adjustments": [],
+      "components": [
+        {
+          "amount": "10",
+          "end": "100",
+          "quantity": "100",
+          "start": "0",
+          "tier": 0,
+          "unitPrice": "0.1"
+        },
+        {
+          "amount": "5",
+          "end": "200",
+          "quantity": "100",
+          "start": "100",
+          "tier": 1,
+          "unitPrice": "0.05"
+        },
+        {
+          "amount": "0.5",
+          "end": null,
+          "quantity": "50",
+          "start": "200",
+          "tier": 2,
+          "unitPrice": "0.01"
+        }
+      ],
+      "currency": "USD",
+      "finalAmount": "15.5",
+      "intermediateAmount": "15.5",
+      "model": "graduated_tier",
+      "preAdjustmentAmount": "15.5",
+      "quantity": "250",
+      "rateCardFingerprint": "sha256:86486179cd2576ae24b4b1695ab299281a4143c5995d46cfde913eb90b2f17a7"
+    },
+    "priceFingerprint": "sha256:d0e4ec558b81c21c1a40cba8db9ea30a94e18eb42442d7c97e6e1ddba04d0c68",
+    "pricingFingerprint": "sha256:86486179cd2576ae24b4b1695ab299281a4143c5995d46cfde913eb90b2f17a7",
+    "rateCardFingerprint": "sha256:6f39afd153d454bf4aae49bd1e5fc663c6c704978eb3dfccb61bc1a5f76ff103",
+    "schemas": {
+      "structured:cost.calculations@1.0.0": "sha256:9af650c99240a165048e705356d510f3511eb39f7c3c6598cf9bcaf6d5ad0bde",
+      "structured:cost.rate_cards@1.0.0": "sha256:c26ac78c1f9e791da86a9f38c3e93bbffef74c2b5116b792a95a1cf4b2794530",
+      "structured:cost.records@1.0.0": "sha256:edb46ee112f09f111783fed371d97f0b2df5d856afcbfaa9548c9fe852823d7c"
+    }
+  }
+}

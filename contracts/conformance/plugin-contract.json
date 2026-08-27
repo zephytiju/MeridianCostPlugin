@@ -1,0 +1,59 @@
+{
+  "apis": [
+    "allocation",
+    "calculation",
+    "evidence",
+    "pricing",
+    "query",
+    "rate-card"
+  ],
+  "boundaries": {
+    "catalogOwnership": false,
+    "credentials": false,
+    "engineProvisioning": false,
+    "engineSelection": false,
+    "nativeQuery": false,
+    "privateDatabase": false,
+    "service": false,
+    "usageStorageAccess": false
+  },
+  "catalogs": {
+    "owned": [],
+    "used": [
+      "evidence",
+      "structured"
+    ]
+  },
+  "dependencies": {
+    "usage": "meridian-plugin-usage==1.0.0"
+  },
+  "design": {
+    "adapterRevision": 24,
+    "catalogRevision": 70,
+    "constructsRevision": 45,
+    "costLldRevision": 16,
+    "hldRevision": 56,
+    "kafkaStreamingRevision": 6
+  },
+  "formatVersion": "meridian.cost.plugin.v1",
+  "package": "meridian-plugin-cost",
+  "plugin": {
+    "contract": "1.0.0",
+    "core": "1.x",
+    "id": "cost"
+  },
+  "pricingModels": [
+    "commitment_credit",
+    "flat_unit",
+    "graduated_tier",
+    "minimum_charge",
+    "volume_tier"
+  ],
+  "repository": "zephytiju/MeridianPluginCost",
+  "resources": [
+    "structured:cost.calculations",
+    "structured:cost.rate_cards",
+    "structured:cost.records"
+  ],
+  "version": "1.0.0"
+}
