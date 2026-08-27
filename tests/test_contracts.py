@@ -60,3 +60,13 @@ def test_source_has_no_legacy_cost_repository_identifier() -> None:
     )
     assert "MeridianCostPlugin" not in contents
     assert "zephytiju/meridian-plugin-cost" not in contents
+
+
+@pytest.mark.contract
+def test_release_recovery_preserves_deterministic_attestation() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+    assert "actions/attest-sbom@" not in workflow
+    assert 'document["serialNumber"]' in workflow
+    assert '--source-commit "${{ steps.source.outputs.commit }}"' in workflow
+    assert "github.event_name == 'push' || github.event_name == 'workflow_dispatch'" in workflow
+    assert "skip-existing: true" in workflow
