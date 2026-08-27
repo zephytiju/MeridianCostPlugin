@@ -37,6 +37,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.RELEASE_TAG }}
+      - name: Resolve immutable source commit
+        id: source
+        run: echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.13"
@@ -65,12 +68,33 @@ jobs:
           --spec-version 1.6
           --output-format JSON
           --output-file dist/sbom.cdx.json
+      - name: Add deterministic CycloneDX serial number
+        env:
+          SBOM_NAMESPACE: ${{ github.repository }}@${{ env.RELEASE_TAG }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import uuid
+
+          path = pathlib.Path("dist/sbom.cdx.json")
+          document = json.loads(path.read_text(encoding="utf-8"))
+          payload = json.dumps(document, sort_keys=True, separators=(",", ":")).encode()
+          identity = f"{os.environ['SBOM_NAMESPACE']}#{hashlib.sha256(payload).hexdigest()}"
+          document["serialNumber"] = f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, identity)}"
+          path.write_text(
+              json.dumps(document, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
       - name: Verify dependency SBOM
         run: python scripts/verify_sbom.py dist/sbom.cdx.json
       - name: Create release evidence ledger
         run: >-
           python scripts/create_release_evidence.py dist
-          --source-commit "$GITHUB_SHA"
+          --source-commit "${{ steps.source.outputs.commit }}"
           --tag "$RELEASE_TAG"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -94,7 +118,7 @@ jobs:
       - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: "dist/*"
-      - uses: actions/attest-sbom@c604332985a26aa8cf1bdc465b92731239ec6b9e # v4.1.0
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: "dist/meridian_plugin_cost-*"
           sbom-path: "dist/sbom.cdx.json"
@@ -123,7 +147,7 @@ jobs:
 
   pypi:
     name: Publish PyPI
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: [build, attest]
     runs-on: ubuntu-latest
     environment:
@@ -143,3 +167,4 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
           packages-dir: publish/
+          skip-existing: true
