@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Architecture and authority boundaries
 
-`meridian-storage-plugin-cost` is the Cost profile/plugin for Meridian V1. Its canonical source
+`meridian-plugin-cost` is the Cost profile/plugin for Meridian V1. Its canonical source
 repository is [`zephytiju/MeridianCostPlugin`](https://github.com/zephytiju/MeridianCostPlugin).
 Repository identity and Python distribution identity are deliberately different: the repository
 uses the approved CamelCase identifier, while package metadata and installation use
-`meridian-storage-plugin-cost`.
+`meridian-plugin-cost`.
 
 ## Composition
 
@@ -42,7 +42,7 @@ this package only states logical capability requirements.
 
 V1 behavior is based on HLD revision 56, Catalog/Public Interfaces revision 70, Engine Adapters
 revision 24, Kafka Streaming Adapter LLD revision 6, MeridianConstructs LLD revision 45, and
-Cost LLD revision 67. The Catalog registry remains exactly `structured`, `object`, `cache`,
+Cost LLD revision 68. The Catalog registry remains exactly `structured`, `object`, `cache`,
 `evidence`, and `streaming`. Cost is a profile over `structured` and never a sixth Catalog.
 
 The public query surface accepts mappings and produces Meridian Expressions plus serialized

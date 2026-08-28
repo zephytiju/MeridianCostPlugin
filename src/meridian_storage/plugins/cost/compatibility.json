@@ -1,7 +1,7 @@
 {
   "$comment": "SPDX-License-Identifier: Apache-2.0",
   "formatVersion": "meridian.cost.compatibility.v1",
-  "package": "meridian-storage-plugin-cost",
+  "package": "meridian-plugin-cost",
   "version": "1.0.1",
   "repository": "zephytiju/MeridianCostPlugin",
   "python": ">=3.12,<3.15",
@@ -22,7 +22,7 @@
     "adapterRevision": 24,
     "kafkaStreamingRevision": 6,
     "constructsRevision": 45,
-    "costLldRevision": 67
+    "costLldRevision": 68
   },
   "boundaries": {
     "service": false,

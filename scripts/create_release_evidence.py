@@ -14,8 +14,8 @@ _TAG = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+$")
 _REQUIRED = {
     "artifact-report.json",
     "conformance-report.json",
-    "meridian_storage_plugin_cost-1.0.1-py3-none-any.whl",
-    "meridian_storage_plugin_cost-1.0.1.tar.gz",
+    "meridian_plugin_cost-1.0.1-py3-none-any.whl",
+    "meridian_plugin_cost-1.0.1.tar.gz",
     "sbom.cdx.json",
 }
 
@@ -49,7 +49,7 @@ def main() -> None:
     ]
     manifest = {
         "artifacts": artifacts,
-        "distribution": "meridian-storage-plugin-cost",
+        "distribution": "meridian-plugin-cost",
         "formatVersion": "meridian.cost.release-manifest.v1",
         "repository": "zephytiju/MeridianCostPlugin",
         "sourceCommit": arguments.source_commit,

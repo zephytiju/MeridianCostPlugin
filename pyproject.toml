@@ -4,7 +4,7 @@ requires = ["hatchling==1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "meridian-storage-plugin-cost"
+name = "meridian-plugin-cost"
 version = "1.0.1"
 description = "Meridian V1 immutable rate-card, deterministic pricing, allocation, and cost plugin"
 readme = "README.md"
