@@ -100,10 +100,10 @@ jobs:
           wheel-smoke/bin/python -c 'import meridian_storage.plugins.cost as cost; assert cost.__version__ == "1.0.1"'
       - name: Create checksum ledger
         working-directory: dist-a
-        run: sha256sum meridian_storage_plugin_cost-* artifact-report.json conformance-report.json sbom.cdx.json > SHA256SUMS
+        run: sha256sum meridian_plugin_cost-* artifact-report.json conformance-report.json sbom.cdx.json > SHA256SUMS
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: meridian-storage-plugin-cost-1.0.1
+          name: meridian-plugin-cost-1.0.1
           path: dist-a/
           if-no-files-found: error
           retention-days: 30

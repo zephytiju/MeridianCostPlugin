@@ -32,7 +32,7 @@ def test_schema_provider_publishes_three_cost_resources() -> None:
         "records",
     }
     assert {item.ref.catalog for item in bundle.schemas} == {"structured"}
-    assert bundle.extensions["distribution"] == "meridian-storage-plugin-cost"
+    assert bundle.extensions["distribution"] == "meridian-plugin-cost"
     assert bundle.extensions["usageDependency"] == "meridian-plugin-usage==1.0.2"
     assert bundle.fingerprint.startswith("sha256:")
 
@@ -54,7 +54,7 @@ def test_plugin_manifest_preserves_canonical_repository_and_boundaries() -> None
     assert manifest.plugin_id == "cost"
     assert manifest.plugin_version == "1.0.1"
     assert manifest.extensions["repository"] == "zephytiju/MeridianCostPlugin"
-    assert manifest.extensions["distribution"] == "meridian-storage-plugin-cost"
+    assert manifest.extensions["distribution"] == "meridian-plugin-cost"
     assert manifest.extensions["catalog"] == "structured"
     assert manifest.extensions["service"] == "false"
     assert manifest.extensions["engineAuthority"] == "false"
@@ -64,7 +64,7 @@ def test_plugin_manifest_preserves_canonical_repository_and_boundaries() -> None
 
 
 def test_installed_distribution_and_entry_points_are_exact() -> None:
-    assert version("meridian-storage-plugin-cost") == "1.0.1"
+    assert version("meridian-plugin-cost") == "1.0.1"
     assert version("meridian-plugin-usage") == "1.0.2"
     plugins = {item.name: item for item in entry_points(group="meridian_storage.plugins")}
     schemas = {item.name: item for item in entry_points(group="meridian_storage.schemas")}

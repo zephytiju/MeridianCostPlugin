@@ -14,7 +14,7 @@ from pathlib import Path, PurePosixPath
 
 from packaging.specifiers import SpecifierSet
 
-PACKAGE = "meridian_storage_plugin_cost"
+PACKAGE = "meridian_plugin_cost"
 VERSION = "1.0.1"
 WHEEL_REQUIRED = {
     "meridian_storage/plugins/cost/__init__.py",
@@ -65,7 +65,7 @@ def _verify_wheel(path: Path) -> dict[str, object]:
         if len(metadata_names) != 1:
             _fail("wheel must contain exactly one distribution metadata directory")
         metadata = BytesParser(policy=default).parsebytes(archive.read(metadata_names[0]))
-        if metadata["Name"] != "meridian-storage-plugin-cost" or metadata["Version"] != VERSION:
+        if metadata["Name"] != "meridian-plugin-cost" or metadata["Version"] != VERSION:
             _fail("wheel Name or Version differs from the release contract")
         if SpecifierSet(metadata["Requires-Python"]) != SpecifierSet(">=3.12,<3.15"):
             _fail("wheel Python compatibility differs from the release contract")
@@ -113,7 +113,7 @@ def verify(directory: Path) -> dict[str, object]:
         _fail("artifact directory must contain exactly one Cost wheel and one source archive")
     return {
         "artifacts": [_verify_wheel(wheels[0]), _verify_sdist(sdists[0])],
-        "distribution": "meridian-storage-plugin-cost",
+        "distribution": "meridian-plugin-cost",
         "formatVersion": "meridian.cost.artifact-report.v1",
         "packageCount": 1,
         "passed": True,

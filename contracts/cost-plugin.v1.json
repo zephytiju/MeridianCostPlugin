@@ -21,7 +21,7 @@
   ],
   "properties": {
     "formatVersion": {"const": "meridian.cost.plugin.v1"},
-    "package": {"const": "meridian-storage-plugin-cost"},
+    "package": {"const": "meridian-plugin-cost"},
     "version": {"const": "1.0.1"},
     "repository": {"const": "zephytiju/MeridianCostPlugin"},
     "plugin": {
@@ -94,7 +94,7 @@
         "adapterRevision": {"const": 24},
         "kafkaStreamingRevision": {"const": 6},
         "constructsRevision": {"const": 45},
-        "costLldRevision": {"const": 67}
+        "costLldRevision": {"const": 68}
       }
     },
     "boundaries": {

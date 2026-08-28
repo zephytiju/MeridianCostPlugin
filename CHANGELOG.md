@@ -4,7 +4,7 @@
 ## 1.0.1 - 2026-08-28
 
 - Corrected the canonical repository identity to `MeridianCostPlugin`.
-- Corrected the distribution identity to `meridian-storage-plugin-cost`.
+- Retained the existing distribution identity `meridian-plugin-cost`.
 - Pinned the official released Usage dependency to `meridian-plugin-usage==1.0.2`.
 - Preserved the `meridian_storage.plugins.cost` import namespace and Cost 1.0.0 schema contract.
 

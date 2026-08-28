@@ -96,7 +96,7 @@ def verify() -> dict[str, object]:
     golden = _load(golden_path)
     Draft202012Validator.check_schema(schema)
     Draft202012Validator(schema).validate(instance)
-    if version("meridian-storage-plugin-cost") != "1.0.1":
+    if version("meridian-plugin-cost") != "1.0.1":
         raise AssertionError("installed Cost distribution version differs from released contract")
     if version("meridian-plugin-usage") != "1.0.2":
         raise AssertionError("released Usage dependency must be exactly 1.0.2")
@@ -126,7 +126,7 @@ def verify() -> dict[str, object]:
         "contractSha256": _sha256(instance_path),
         "formatVersion": "meridian.cost.conformance-report.v1",
         "goldenSha256": _sha256(golden_path),
-        "package": "meridian-storage-plugin-cost",
+        "package": "meridian-plugin-cost",
         "passed": True,
         "repository": "zephytiju/MeridianCostPlugin",
         "usageDependency": "meridian-plugin-usage==1.0.2",

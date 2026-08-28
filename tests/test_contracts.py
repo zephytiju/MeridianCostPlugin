@@ -59,7 +59,7 @@ def test_source_has_no_superseded_cost_identifiers() -> None:
         if path.is_file() and "__pycache__" not in path.parts
     )
     assert "MeridianPluginCost" not in contents
-    assert "meridian-plugin-cost" not in contents
+    assert "zephytiju/meridian-plugin-cost" not in contents
 
 
 @pytest.mark.contract

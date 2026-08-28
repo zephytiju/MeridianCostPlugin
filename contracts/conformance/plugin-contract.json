@@ -31,12 +31,12 @@
     "adapterRevision": 24,
     "catalogRevision": 70,
     "constructsRevision": 45,
-    "costLldRevision": 67,
+    "costLldRevision": 68,
     "hldRevision": 56,
     "kafkaStreamingRevision": 6
   },
   "formatVersion": "meridian.cost.plugin.v1",
-  "package": "meridian-storage-plugin-cost",
+  "package": "meridian-plugin-cost",
   "plugin": {
     "contract": "1.0.0",
     "core": "1.x",
