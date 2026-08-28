@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Architecture and authority boundaries
 
-`meridian-plugin-cost` is the Cost profile/plugin for Meridian V1. Its canonical source
-repository is [`zephytiju/MeridianPluginCost`](https://github.com/zephytiju/MeridianPluginCost).
+`meridian-storage-plugin-cost` is the Cost profile/plugin for Meridian V1. Its canonical source
+repository is [`zephytiju/MeridianCostPlugin`](https://github.com/zephytiju/MeridianCostPlugin).
 Repository identity and Python distribution identity are deliberately different: the repository
 uses the approved CamelCase identifier, while package metadata and installation use
-`meridian-plugin-cost`.
+`meridian-storage-plugin-cost`.
 
 ## Composition
 
@@ -28,7 +28,7 @@ Audit and lineage are optionally appended to `evidence:cost.audit` and
 ## Usage isolation
 
 The only supported in-process Usage integration is `RepositoryUsageProvider`, which accepts the
-released `UsageRepository` from `meridian-plugin-usage==1.0.0` and calls its public
+released `UsageRepository` from `meridian-plugin-usage==1.0.2` and calls its public
 `get_meter()` and aggregate query APIs. Cost never reads a Usage executor, physical table,
 connection, credential, or private implementation module. An authorized service boundary can
 instead implement `UsageInputProvider` and return the same normalized `UsageInputV1` contract.
@@ -42,7 +42,7 @@ this package only states logical capability requirements.
 
 V1 behavior is based on HLD revision 56, Catalog/Public Interfaces revision 70, Engine Adapters
 revision 24, Kafka Streaming Adapter LLD revision 6, MeridianConstructs LLD revision 45, and
-Cost LLD revision 16. The Catalog registry remains exactly `structured`, `object`, `cache`,
+Cost LLD revision 67. The Catalog registry remains exactly `structured`, `object`, `cache`,
 `evidence`, and `streaming`. Cost is a profile over `structured` and never a sixth Catalog.
 
 The public query surface accepts mappings and produces Meridian Expressions plus serialized
