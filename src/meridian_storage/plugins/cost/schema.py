@@ -274,16 +274,16 @@ class CostSchemaProvider:
             schemas=definitions,
             resources=logical_resources,
             extensions={
-                "distribution": "meridian-plugin-cost",
+                "distribution": "meridian-storage-plugin-cost",
                 "catalog": "structured",
-                "usageDependency": "meridian-plugin-usage==1.0.0",
+                "usageDependency": "meridian-plugin-usage==1.0.2",
                 "design": {
                     "hldRevision": 56,
                     "catalogRevision": 70,
                     "adapterRevision": 24,
                     "kafkaStreamingRevision": 6,
                     "constructsRevision": 45,
-                    "costLldRevision": 16,
+                    "costLldRevision": 67,
                 },
             },
         )

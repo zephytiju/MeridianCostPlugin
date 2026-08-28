@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-# meridian-plugin-cost
+# meridian-storage-plugin-cost
 
 Meridian V1's open-source Cost plugin provides immutable rate cards, exact Decimal pricing,
 deterministic allocation, versioned calculations, cost records, and reproducible explanations
@@ -7,18 +7,18 @@ over logical Meridian Resources.
 
 This distribution is a Python library and Meridian plugin. It is not a service, a Cost Catalog,
 or an owner of a product-private database. It never opens Usage storage: normalized aggregates
-are obtained through the released `meridian-plugin-usage==1.0.0` public API. Cost data targets
+are obtained through the released `meridian-plugin-usage==1.0.2` public API. Cost data targets
 distinct `structured/cost/*` Resources; deployment IaC owns their physical placement and keeps
 Usage and Cost storage isolated.
 
 ## Install
 
 ```console
-python -m pip install meridian-plugin-cost==1.0.0
+python -m pip install meridian-storage-plugin-cost==1.0.1
 ```
 
-Python 3.12, 3.13, and 3.14 are supported. Runtime Meridian and Usage dependencies are pinned to
-their compatible 1.0.0 releases.
+Python 3.12, 3.13, and 3.14 are supported. Runtime Meridian dependencies remain pinned to their
+compatible 1.0.0 releases, while the official Usage distribution is pinned to 1.0.2.
 
 ## Define and publish a rate card
 

@@ -25,18 +25,18 @@
     ]
   },
   "dependencies": {
-    "usage": "meridian-plugin-usage==1.0.0"
+    "usage": "meridian-plugin-usage==1.0.2"
   },
   "design": {
     "adapterRevision": 24,
     "catalogRevision": 70,
     "constructsRevision": 45,
-    "costLldRevision": 16,
+    "costLldRevision": 67,
     "hldRevision": 56,
     "kafkaStreamingRevision": 6
   },
   "formatVersion": "meridian.cost.plugin.v1",
-  "package": "meridian-plugin-cost",
+  "package": "meridian-storage-plugin-cost",
   "plugin": {
     "contract": "1.0.0",
     "core": "1.x",
@@ -49,11 +49,11 @@
     "minimum_charge",
     "volume_tier"
   ],
-  "repository": "zephytiju/MeridianPluginCost",
+  "repository": "zephytiju/MeridianCostPlugin",
   "resources": [
     "structured:cost.calculations",
     "structured:cost.rate_cards",
     "structured:cost.records"
   ],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

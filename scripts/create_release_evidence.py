@@ -14,8 +14,8 @@ _TAG = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+$")
 _REQUIRED = {
     "artifact-report.json",
     "conformance-report.json",
-    "meridian_plugin_cost-1.0.0-py3-none-any.whl",
-    "meridian_plugin_cost-1.0.0.tar.gz",
+    "meridian_storage_plugin_cost-1.0.1-py3-none-any.whl",
+    "meridian_storage_plugin_cost-1.0.1.tar.gz",
     "sbom.cdx.json",
 }
 
@@ -49,13 +49,13 @@ def main() -> None:
     ]
     manifest = {
         "artifacts": artifacts,
-        "distribution": "meridian-plugin-cost",
+        "distribution": "meridian-storage-plugin-cost",
         "formatVersion": "meridian.cost.release-manifest.v1",
-        "repository": "zephytiju/MeridianPluginCost",
+        "repository": "zephytiju/MeridianCostPlugin",
         "sourceCommit": arguments.source_commit,
         "tag": arguments.tag,
-        "usageDependency": "meridian-plugin-usage==1.0.0",
-        "version": "1.0.0",
+        "usageDependency": "meridian-plugin-usage==1.0.2",
+        "version": "1.0.1",
     }
     manifest_path = arguments.directory / "release-manifest.json"
     manifest_path.write_text(

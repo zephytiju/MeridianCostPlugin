@@ -22,16 +22,16 @@ def test_released_contract_instance_validates() -> None:
     instance = json.loads((ROOT / "contracts" / "conformance" / "plugin-contract.json").read_text())
     Draft202012Validator.check_schema(schema)
     Draft202012Validator(schema).validate(instance)
-    assert instance["repository"] == "zephytiju/MeridianPluginCost"
+    assert instance["repository"] == "zephytiju/MeridianCostPlugin"
     assert instance["catalogs"]["owned"] == []
-    assert instance["dependencies"]["usage"] == "meridian-plugin-usage==1.0.0"
+    assert instance["dependencies"]["usage"] == "meridian-plugin-usage==1.0.2"
 
 
 @pytest.mark.contract
 def test_wheel_compatibility_resource_is_present() -> None:
     path = resources.files("meridian_storage.plugins.cost").joinpath("compatibility.json")
     compatibility = json.loads(path.read_text(encoding="utf-8"))
-    assert compatibility["repository"] == "zephytiju/MeridianPluginCost"
+    assert compatibility["repository"] == "zephytiju/MeridianCostPlugin"
     assert compatibility["boundaries"]["usageStorageAccess"] is False
     assert compatibility["catalogs"] == {"owned": [], "used": ["evidence", "structured"]}
 
@@ -50,7 +50,7 @@ def test_conformance_report_is_deterministic() -> None:
 
 
 @pytest.mark.contract
-def test_source_has_no_legacy_cost_repository_identifier() -> None:
+def test_source_has_no_superseded_cost_identifiers() -> None:
     tracked_roots = [ROOT / "src", ROOT / "contracts", ROOT / "docs", ROOT / ".github"]
     contents = "\n".join(
         path.read_text(encoding="utf-8")
@@ -58,8 +58,8 @@ def test_source_has_no_legacy_cost_repository_identifier() -> None:
         for path in root.rglob("*")
         if path.is_file() and "__pycache__" not in path.parts
     )
-    assert "MeridianCostPlugin" not in contents
-    assert "zephytiju/meridian-plugin-cost" not in contents
+    assert "MeridianPluginCost" not in contents
+    assert "meridian-plugin-cost" not in contents
 
 
 @pytest.mark.contract

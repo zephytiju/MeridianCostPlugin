@@ -4,7 +4,7 @@
 Install the exact V1 distribution:
 
 ```console
-python -m pip install meridian-plugin-cost==1.0.0
+python -m pip install meridian-storage-plugin-cost==1.0.1
 ```
 
 Meridian discovers `CostPluginFactory` and `CostSchemaProvider` from package entry points. The

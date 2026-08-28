@@ -91,7 +91,7 @@ class MeridianEvidenceSink:
                 "currency": calculation.currency,
                 "calculatorVersion": calculation.calculator_version,
             },
-            provenance={"plugin": "meridian-plugin-cost", "version": "1.0.0"},
+            provenance={"plugin": "meridian-storage-plugin-cost", "version": "1.0.1"},
         )
         audit = AuditRecord(
             action="cost.calculation.persisted",
