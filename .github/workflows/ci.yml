@@ -18,6 +18,18 @@ jobs:
   test:
     name: Python ${{ matrix.python }}
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cost_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d cost_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      COST_TEST_POSTGRES_DSN: postgresql://postgres:postgres@127.0.0.1:5432/cost_test
     strategy:
       fail-fast: false
       matrix:
@@ -40,7 +52,13 @@ jobs:
       - name: Verify released contracts
         run: python scripts/verify_contracts.py
       - name: Run unit, integration, and conformance tests
-        run: pytest
+        run: pytest --junitxml=test-results.xml
+      - name: Preserve compatibility results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cost-usage-compatibility-python-${{ matrix.python }}
+          path: test-results.xml
 
   security:
     name: Security
@@ -96,14 +114,16 @@ jobs:
       - name: Smoke-install built wheel
         run: |
           python -m venv wheel-smoke
-          wheel-smoke/bin/python -m pip install --disable-pip-version-check dist-a/*.whl
-          wheel-smoke/bin/python -c 'import meridian_storage.plugins.cost as cost; assert cost.__version__ == "1.0.1"'
+          wheel-smoke/bin/python -m pip install --disable-pip-version-check --report dist-a/clean-install.json dist-a/*.whl
+          wheel-smoke/bin/python -m pip check
+          wheel-smoke/bin/python -m pip freeze > dist-a/clean-install.lock
+          wheel-smoke/bin/python -c 'import meridian_storage.plugins.cost as cost; assert cost.__version__ == "2.0.0"'
       - name: Create checksum ledger
         working-directory: dist-a
-        run: sha256sum meridian_plugin_cost-* artifact-report.json conformance-report.json sbom.cdx.json > SHA256SUMS
+        run: sha256sum meridian_plugin_cost-* artifact-report.json conformance-report.json sbom.cdx.json clean-install.json clean-install.lock > SHA256SUMS
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: meridian-plugin-cost-1.0.1
+          name: meridian-plugin-cost-2.0.0
           path: dist-a/
           if-no-files-found: error
           retention-days: 30

@@ -13,9 +13,12 @@ _COMMIT = re.compile(r"^[0-9a-f]{40,64}$")
 _TAG = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+$")
 _REQUIRED = {
     "artifact-report.json",
+    "clean-install.json",
+    "clean-install.lock",
+    "compatibility-tests.xml",
     "conformance-report.json",
-    "meridian_plugin_cost-1.0.1-py3-none-any.whl",
-    "meridian_plugin_cost-1.0.1.tar.gz",
+    "meridian_plugin_cost-2.0.0-py3-none-any.whl",
+    "meridian_plugin_cost-2.0.0.tar.gz",
     "sbom.cdx.json",
 }
 
@@ -54,8 +57,8 @@ def main() -> None:
         "repository": "zephytiju/MeridianCostPlugin",
         "sourceCommit": arguments.source_commit,
         "tag": arguments.tag,
-        "usageDependency": "meridian-plugin-usage==1.0.2",
-        "version": "1.0.1",
+        "usageDependency": "meridian-plugin-usage==2.0.0",
+        "version": "2.0.0",
     }
     manifest_path = arguments.directory / "release-manifest.json"
     manifest_path.write_text(

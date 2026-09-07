@@ -24,7 +24,7 @@ def test_released_contract_instance_validates() -> None:
     Draft202012Validator(schema).validate(instance)
     assert instance["repository"] == "zephytiju/MeridianCostPlugin"
     assert instance["catalogs"]["owned"] == []
-    assert instance["dependencies"]["usage"] == "meridian-plugin-usage==1.0.2"
+    assert instance["dependencies"]["usage"] == "meridian-plugin-usage==2.0.0"
 
 
 @pytest.mark.contract

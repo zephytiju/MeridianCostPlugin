@@ -29,6 +29,8 @@ from meridian_storage.plugins.cost import (
 )
 from meridian_storage.plugins.usage import UsageAggregateV1, UsageScope, UsageWindow
 
+pytest_plugins = ("postgres_backend",)
+
 START = datetime(2026, 1, 1, tzinfo=UTC)
 END = datetime(2026, 2, 1, tzinfo=UTC)
 NOW = datetime(2026, 8, 26, tzinfo=UTC)

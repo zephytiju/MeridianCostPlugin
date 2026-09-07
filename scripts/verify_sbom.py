@@ -8,11 +8,11 @@ import json
 from pathlib import Path
 
 _RUNTIME = {
-    "meridian-plugin-usage": "1.0.2",
-    "meridian-storage-core": "1.0.0",
-    "meridian-storage-evidence": "1.0.0",
-    "meridian-storage-query": "1.0.0",
-    "meridian-storage-semantics": "1.0.0",
+    "meridian-plugin-usage": "2.0.0",
+    "meridian-storage-core": "1.0.1",
+    "meridian-storage-evidence": "1.0.1",
+    "meridian-storage-query": "1.0.2",
+    "meridian-storage-semantics": "2.0.0",
 }
 
 
@@ -29,7 +29,7 @@ def main() -> None:
     root = metadata["component"]
     if (root.get("name"), root.get("version"), root.get("type")) != (
         "meridian-plugin-cost",
-        "1.0.1",
+        "2.0.0",
         "library",
     ):
         raise SystemExit("release SBOM root differs from the Cost distribution")
@@ -52,7 +52,7 @@ def main() -> None:
             {
                 "formatVersion": "meridian.cost.sbom-report.v1",
                 "passed": True,
-                "root": "meridian-plugin-cost@1.0.1",
+                "root": "meridian-plugin-cost@2.0.0",
                 "runtimeDependencies": _RUNTIME,
                 "specVersion": "1.6",
             },

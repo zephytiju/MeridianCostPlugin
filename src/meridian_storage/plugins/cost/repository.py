@@ -175,7 +175,7 @@ class CostRepository:
         *,
         identity: str,
     ) -> OperationResult:
-        expression = self._surface.put(resource=resource.to_dict(), data=data)
+        expression = self._surface.put(resource=resource.to_dict(), data=data, mode="if_absent")
         return self._execute(expression, kind="put", identity=identity)
 
     @staticmethod
