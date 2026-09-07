@@ -59,7 +59,7 @@ class CostPluginFactory:
                 "repository": "zephytiju/MeridianCostPlugin",
                 "catalog": "structured",
                 "evidenceCatalog": "evidence",
-                "usageDependency": "meridian-plugin-usage==2.0.0",
+                "usageDependency": "meridian-plugin-usage==2.0.1",
                 "service": "false",
                 "privateDatabase": "false",
                 "nativeQuery": "false",

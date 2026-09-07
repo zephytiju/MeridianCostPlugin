@@ -72,7 +72,7 @@ def _verify_wheel(path: Path) -> dict[str, object]:
         if metadata["License-Expression"] != "Apache-2.0":
             _fail("wheel must publish the SPDX Apache-2.0 license expression")
         requirements = metadata.get_all("Requires-Dist", failobj=[])
-        if "meridian-plugin-usage==2.0.0" not in requirements:
+        if "meridian-plugin-usage==2.0.1" not in requirements:
             _fail("wheel must depend on the exact released Usage distribution")
         package_roots = {
             "/".join(PurePosixPath(name).parts[:3])

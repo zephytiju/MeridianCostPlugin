@@ -98,8 +98,8 @@ def verify() -> dict[str, object]:
     Draft202012Validator(schema).validate(instance)
     if version("meridian-plugin-cost") != "2.0.0":
         raise AssertionError("installed Cost distribution version differs from released contract")
-    if version("meridian-plugin-usage") != "2.0.0":
-        raise AssertionError("released Usage dependency must be exactly 2.0.0")
+    if version("meridian-plugin-usage") != "2.0.1":
+        raise AssertionError("released Usage dependency must be exactly 2.0.1")
     manifest = CostPluginFactory().manifest()
     if manifest.extensions["repository"] != instance["repository"]:
         raise AssertionError("plugin manifest repository differs from the canonical contract")
@@ -129,7 +129,7 @@ def verify() -> dict[str, object]:
         "package": "meridian-plugin-cost",
         "passed": True,
         "repository": "zephytiju/MeridianCostPlugin",
-        "usageDependency": "meridian-plugin-usage==2.0.0",
+        "usageDependency": "meridian-plugin-usage==2.0.1",
         "vectors": vectors,
         "version": "2.0.0",
     }

@@ -39,7 +39,7 @@
       "additionalProperties": false,
       "required": ["usage"],
       "properties": {
-        "usage": {"const": "meridian-plugin-usage==2.0.0"}
+        "usage": {"const": "meridian-plugin-usage==2.0.1"}
       }
     },
     "catalogs": {

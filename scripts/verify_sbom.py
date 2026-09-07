@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 _RUNTIME = {
-    "meridian-plugin-usage": "2.0.0",
+    "meridian-plugin-usage": "2.0.1",
     "meridian-storage-core": "1.0.1",
     "meridian-storage-evidence": "1.0.1",
     "meridian-storage-query": "1.0.2",

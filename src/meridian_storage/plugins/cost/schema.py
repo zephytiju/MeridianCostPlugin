@@ -279,7 +279,7 @@ class CostSchemaProvider:
             extensions={
                 "distribution": "meridian-plugin-cost",
                 "catalog": "structured",
-                "usageDependency": "meridian-plugin-usage==2.0.0",
+                "usageDependency": "meridian-plugin-usage==2.0.1",
                 "design": {
                     "hldRevision": 56,
                     "catalogRevision": 70,

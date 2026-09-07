@@ -57,7 +57,7 @@ def main() -> None:
         "repository": "zephytiju/MeridianCostPlugin",
         "sourceCommit": arguments.source_commit,
         "tag": arguments.tag,
-        "usageDependency": "meridian-plugin-usage==2.0.0",
+        "usageDependency": "meridian-plugin-usage==2.0.1",
         "version": "2.0.0",
     }
     manifest_path = arguments.directory / "release-manifest.json"

@@ -17,8 +17,7 @@ from meridian_storage.adapters.postgresql.migration import MigrationExecutor
 from meridian_storage.adapters.postgresql.schema import SchemaCompiler
 from meridian_storage.evidence import EvidenceCatalogProvider
 from meridian_storage.plugins.cost import CostSchemaProvider, cost_schemas
-from meridian_storage.plugins.usage import UsageResources, usage_schemas
-from meridian_storage.registry import NamespaceDefinition, ResourceBundle, ResourceDefinition
+from meridian_storage.plugins.usage import UsageResources, UsageSchemaProvider, usage_schemas
 from meridian_storage.semantics import StructuredCatalogProvider
 from meridian_storage.spi.adapters import SecretValue
 
@@ -31,39 +30,7 @@ class LocalTestSecrets:
         return SecretValue(self.values[reference.reference].encode())
 
 
-USAGE_RESOURCES = UsageResources(
-    **{
-        name: f"usage.cost_test_{name}"
-        for name in ("meters", "events", "aggregates", "batches", "checkpoints", "claims")
-    }
-)
-
-
-class HostUsageSchemaProvider:
-    """Host-owned Resource placement over unchanged, released Usage schemas."""
-
-    provider_id = "cost-test-usage"
-    provider_contract_version = "1.0.0"
-
-    def load(self):
-        docs = usage_schemas()
-        schemas = tuple(d.to_core_definition() for d in docs)
-        return ResourceBundle(
-            self.provider_id,
-            "1.0.0",
-            self.provider_contract_version,
-            namespaces=(NamespaceDefinition("structured", "usage"),),
-            schemas=schemas,
-            resources=tuple(
-                ResourceDefinition(
-                    getattr(USAGE_RESOURCES, d.ref.name),
-                    profile=d.semantic_kind.value,
-                    schema=s.ref,
-                    required_scope=("runtime",),
-                )
-                for d, s in zip(docs, schemas, strict=True)
-            ),
-        )
+USAGE_RESOURCES = UsageResources()
 
 
 class LiveBackend:
@@ -76,7 +43,7 @@ class LiveBackend:
                 "credential": values.pop("password", "postgres"),
             }
         )
-        self.providers = (HostUsageSchemaProvider(), CostSchemaProvider())
+        self.providers = (UsageSchemaProvider(), CostSchemaProvider())
         bundles = tuple(p.load() for p in self.providers)
         docs = (*usage_schemas(), *cost_schemas())
         all_resources = tuple(r for b in bundles for r in b.resources)
@@ -249,7 +216,6 @@ class LiveBackend:
     def start(self):
         runtime = Meridian.from_config(
             self.config,
-            schema_providers=(self.providers[0],),
             secret_resolver=self.secrets,
         )
         runtime.start()

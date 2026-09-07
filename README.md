@@ -7,7 +7,7 @@ over logical Meridian Resources.
 
 This distribution is a Python library and Meridian plugin. It is not a service, a Cost Catalog,
 or an owner of a product-private database. It never opens Usage storage: normalized aggregates
-are obtained through the released `meridian-plugin-usage==2.0.0` public API. Cost data targets
+are obtained through the released `meridian-plugin-usage==2.0.1` public API. Cost data targets
 distinct `structured/cost/*` Resources; deployment IaC owns their physical placement and keeps
 Usage and Cost storage isolated.
 

@@ -28,7 +28,7 @@ Audit and lineage are optionally appended to `evidence:cost.audit` and
 ## Usage isolation
 
 The only supported in-process Usage integration is `RepositoryUsageProvider`, which accepts the
-released `UsageRepository` from `meridian-plugin-usage==2.0.0` and calls its public
+released `UsageRepository` from `meridian-plugin-usage==2.0.1` and calls its public
 `get_meter()` and aggregate query APIs. Cost never reads a Usage executor, physical table,
 connection, credential, or private implementation module. An authorized service boundary can
 instead implement `UsageInputProvider` and return the same normalized `UsageInputV1` contract.
