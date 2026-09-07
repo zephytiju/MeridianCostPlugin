@@ -14,6 +14,8 @@ dependency installation with `--no-deps` are unsupported.
 | Repository and normalized-input providers | Real PostgreSQL tests pass for 12, scale12, scale18, zero and 2.500; restart replay, immutable old versions and corrections preserve exact provenance |
 
 The full 83-test suite includes ten live PostgreSQL cases, with no skipped gates.
+Scoped Cost reads also verify tenant isolation, microsecond half-open boundaries
+and exact record provenance through the supported mapping-first predicates.
 Tests exercise the actual Usage and Cost schema-provider entry points and default
 Resources, without substitute providers, schema edits or capability overlays.
 Cost reads Usage only through the released public API. The test host provisions

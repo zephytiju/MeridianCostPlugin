@@ -103,6 +103,7 @@ def _resource(value: object) -> ResourceRef:
 
 
 def _compare(actual: object, operator: object, candidate: object) -> bool:
+    operator = operator.removeprefix("$") if isinstance(operator, str) else operator
     matched = True
     if operator == "in":
         matched = actual in candidate  # type: ignore[operator]

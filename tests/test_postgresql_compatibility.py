@@ -2,6 +2,7 @@
 """Registry dependency compatibility through real Meridian/PostgreSQL persistence."""
 
 from dataclasses import replace
+from datetime import timedelta
 from decimal import Decimal
 from uuid import uuid4
 
@@ -19,12 +20,42 @@ from conftest import (
 from meridian_storage import OperationContext
 from meridian_storage.plugins.cost import (
     CostCalculator,
+    CostRecordV1,
     CostRepository,
     RepositoryUsageProvider,
     StaticUsageProvider,
 )
 from meridian_storage.plugins.usage import MeterV1, UsageRepository, UsageScope, UsageWindow
 from postgres_backend import USAGE_RESOURCES
+
+
+def assert_scoped_readback(cost, first):
+    rows = (
+        cost.queries.records(
+            {"tenant": "acme"},
+            END,
+            END + timedelta(microseconds=1),
+            where={"currency": {"eq": "USD"}},
+        )
+        .execute()
+        .items
+    )
+    assert len(rows) == 1
+    assert CostRecordV1.from_mapping(rows[0]).to_dict() == first.records[0].to_dict()
+    assert not cost.queries.records({"tenant": "acme"}, START, END).execute().items
+    assert (
+        not cost.queries.records({"tenant": "other"}, END, END + timedelta(microseconds=1))
+        .execute()
+        .items
+    )
+    created = first.calculation.created_at
+    calculations = (
+        cost.queries.calculations({"tenant": "acme"}, created, created + timedelta(microseconds=1))
+        .execute()
+        .items
+    )
+    assert len(calculations) == 1
+    assert calculations[0]["fingerprint"] == first.calculation.fingerprint
 
 
 @pytest.mark.integration
@@ -72,6 +103,7 @@ def test_persisted_usage_calculation_replay_and_correction(postgres_backend, tot
         usage, cost = UsageRepository(fresh, USAGE_RESOURCES), CostRepository(fresh)
         assert usage.put_aggregate(aggregate) == (aggregate, True)
         assert cost.get_rate_card(card.rate_card_id, 1).to_dict() == card.to_dict()
+        assert_scoped_readback(cost, first)
         assert (
             cost.get_calculation(first.calculation.calculation_id, 1).to_dict()
             == first.calculation.to_dict()

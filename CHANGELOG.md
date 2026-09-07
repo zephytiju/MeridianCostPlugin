@@ -5,7 +5,8 @@
 
 - Consume corrected released Usage 2.0.1 and its coherent dependency closure.
 - Use explicit immutable create mode and the supported Cost time-series Resource profile.
-- Add live PostgreSQL restart, replay, correction and provenance acceptance tests.
+- Lower Cost query operators to supported predicates while preserving logical-plan fingerprints.
+- Add live PostgreSQL restart, replay, correction and scoped-read provenance acceptance tests.
 - Preserve clean-install locks and artifact digests through CI, including registry-only
   acceptance after publication. Default Usage/Cost provider composition is verified.
 
