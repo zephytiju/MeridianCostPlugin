@@ -214,7 +214,10 @@ def cost_schemas() -> tuple[SchemaDocument, ...]:
 
 
 def _requirements(*methods: str) -> tuple[CapabilityRequirement, ...]:
-    return tuple(CapabilityRequirement(f"meridian.structured.{item}", "1.0.0") for item in methods)
+    return tuple(
+        CapabilityRequirement(f"meridian.structured.{item}", "2.0.0" if item == "put" else "1.0.0")
+        for item in methods
+    )
 
 
 class CostSchemaProvider:
@@ -249,7 +252,7 @@ class CostSchemaProvider:
             ),
             ResourceDefinition(
                 resources.records,
-                "cost",
+                "time-series",
                 definitions[2].ref,
                 labels={"plugin": "cost", "recordType": "cost-record"},
                 requirements=_requirements("get", "put", "query"),
@@ -276,7 +279,7 @@ class CostSchemaProvider:
             extensions={
                 "distribution": "meridian-plugin-cost",
                 "catalog": "structured",
-                "usageDependency": "meridian-plugin-usage==1.0.2",
+                "usageDependency": "meridian-plugin-usage==2.0.1",
                 "design": {
                     "hldRevision": 56,
                     "catalogRevision": 70,

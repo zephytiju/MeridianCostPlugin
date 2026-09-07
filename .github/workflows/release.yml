@@ -26,6 +26,18 @@ jobs:
   build:
     name: Build release
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cost_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d cost_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      COST_TEST_POSTGRES_DSN: postgresql://postgres:postgres@127.0.0.1:5432/cost_test
     steps:
       - name: Validate release tag
         shell: bash
@@ -52,13 +64,20 @@ jobs:
           ruff format --check .
           ruff check .
           mypy src
-          pytest
+          pytest --junitxml=compatibility-tests.xml
       - name: Build and verify distributions
         run: |
           python -m build --no-isolation --outdir dist
           twine check dist/*
           python scripts/verify_artifacts.py dist --output dist/artifact-report.json
           python scripts/verify_contracts.py --output dist/conformance-report.json
+      - name: Verify clean candidate installation
+        run: |
+          python -m venv wheel-smoke
+          wheel-smoke/bin/python -m pip install --report dist/clean-install.json dist/*.whl
+          wheel-smoke/bin/python -m pip check
+          wheel-smoke/bin/python -m pip freeze > dist/clean-install.lock
+          cp compatibility-tests.xml dist/
       - name: Generate dependency SBOM
         run: >-
           cyclonedx-py environment
@@ -168,3 +187,65 @@ jobs:
         with:
           packages-dir: publish/
           skip-existing: true
+
+  verify-published:
+    name: Verify published PyPI package
+    needs: pypi
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: cost_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d cost_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      COST_TEST_POSTGRES_DSN: postgresql://postgres:postgres@127.0.0.1:5432/cost_test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Install published runtime closure
+        shell: bash
+        run: |
+          mkdir -p published-evidence
+          python -m venv "$RUNNER_TEMP/published-cost"
+          "$RUNNER_TEMP/published-cost/bin/python" -m pip install pip==26.2
+          installed=false
+          for attempt in 1 2 3 4; do
+            if "$RUNNER_TEMP/published-cost/bin/python" -m pip install --no-cache-dir \
+              --index-url https://pypi.org/simple --report published-evidence/install.json \
+              "meridian-plugin-cost==${RELEASE_TAG#v}"; then
+              installed=true
+              break
+            fi
+            sleep 15
+          done
+          test "$installed" = true
+          "$RUNNER_TEMP/published-cost/bin/python" -m pip check | tee published-evidence/pip-check.txt
+          "$RUNNER_TEMP/published-cost/bin/python" -m pip freeze > published-evidence/runtime.lock
+      - name: Verify public package acceptance
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/published-cost/bin/python" -m pip install --no-cache-dir \
+            --index-url https://pypi.org/simple --report published-evidence/test-install.json \
+            "meridian-plugin-cost[test]==${RELEASE_TAG#v}"
+          "$RUNNER_TEMP/published-cost/bin/python" -m pip check
+          "$RUNNER_TEMP/published-cost/bin/python" -c 'import meridian_storage.plugins.cost as cost; from pathlib import Path; import sys; assert Path(cost.__file__).is_relative_to(Path(sys.prefix))'
+          "$RUNNER_TEMP/published-cost/bin/python" -m pytest --junitxml=published-evidence/tests.xml
+      - name: Checksum published acceptance evidence
+        if: always()
+        working-directory: published-evidence
+        run: find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: published-compatibility
+          path: published-evidence/
+          if-no-files-found: error

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "meridian-plugin-cost"
-version = "1.0.1"
+version = "2.0.0"
 description = "Meridian V1 immutable rate-card, deterministic pricing, allocation, and cost plugin"
 readme = "README.md"
 requires-python = ">=3.12,<3.15"
@@ -25,11 +25,11 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "meridian-plugin-usage==1.0.2",
-  "meridian-storage-core==1.0.0",
-  "meridian-storage-evidence==1.0.0",
-  "meridian-storage-query==1.0.0",
-  "meridian-storage-semantics==1.0.0",
+  "meridian-plugin-usage==2.0.1",
+  "meridian-storage-core==1.0.1",
+  "meridian-storage-evidence==1.0.1",
+  "meridian-storage-query==1.0.2",
+  "meridian-storage-semantics==2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -41,6 +41,7 @@ test = [
   "hatchling==1.27.0",
   "jsonschema==4.25.1",
   "lxml==6.1.0",
+  "meridian-storage-postgresql==2.1.1",
   "mypy==1.17.1",
   "packaging==26.3",
   "pip-audit==2.10.1",

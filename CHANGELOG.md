@@ -1,6 +1,15 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Changelog
 
+## 2.0.0 - 2026-09-07
+
+- Consume corrected released Usage 2.0.1 and its coherent dependency closure.
+- Use explicit immutable create mode and the supported Cost time-series Resource profile.
+- Lower Cost query operators to supported predicates while preserving logical-plan fingerprints.
+- Add live PostgreSQL restart, replay, correction and scoped-read provenance acceptance tests.
+- Preserve clean-install locks and artifact digests through CI, including registry-only
+  acceptance after publication. Default Usage/Cost provider composition is verified.
+
 ## 1.0.1 - 2026-08-28
 
 - Corrected the canonical repository identity to `MeridianCostPlugin`.

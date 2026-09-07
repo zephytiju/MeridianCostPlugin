@@ -107,6 +107,18 @@ def _predicate(value: Mapping[str, object]) -> ValueExpression | None:
     return BooleanExpression("and", tuple(expressions))
 
 
+def _expression_predicates(where: Mapping[str, object]) -> dict[str, object]:
+    """Lower validated Cost operators to the released mapping-first Query syntax."""
+    return {
+        name: (
+            {f"${operator}": candidate for operator, candidate in value.items()}
+            if isinstance(value, Mapping)
+            else value
+        )
+        for name, value in where.items()
+    }
+
+
 def _items(data: object, limit: int) -> tuple[Mapping[str, object], ...]:
     selected = data
     if isinstance(data, Mapping):
@@ -174,7 +186,7 @@ class CostQuery:
     def expression(self) -> Expression:
         return StructuredCatalogSurface().query(
             resource=self.resource.to_dict(),
-            where=self.where,
+            where=_expression_predicates(self.where),
             select=self.select,
             order_by=tuple(item.to_dict() for item in self.order_by),
             limit=self.limit,

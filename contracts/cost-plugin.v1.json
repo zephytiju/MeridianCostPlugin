@@ -22,7 +22,7 @@
   "properties": {
     "formatVersion": {"const": "meridian.cost.plugin.v1"},
     "package": {"const": "meridian-plugin-cost"},
-    "version": {"const": "1.0.1"},
+    "version": {"const": "2.0.0"},
     "repository": {"const": "zephytiju/MeridianCostPlugin"},
     "plugin": {
       "type": "object",
@@ -39,7 +39,7 @@
       "additionalProperties": false,
       "required": ["usage"],
       "properties": {
-        "usage": {"const": "meridian-plugin-usage==1.0.2"}
+        "usage": {"const": "meridian-plugin-usage==2.0.1"}
       }
     },
     "catalogs": {

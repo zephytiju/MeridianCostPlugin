@@ -25,7 +25,7 @@
     ]
   },
   "dependencies": {
-    "usage": "meridian-plugin-usage==1.0.2"
+    "usage": "meridian-plugin-usage==2.0.1"
   },
   "design": {
     "adapterRevision": 24,
@@ -55,5 +55,5 @@
     "structured:cost.rate_cards",
     "structured:cost.records"
   ],
-  "version": "1.0.1"
+  "version": "2.0.0"
 }

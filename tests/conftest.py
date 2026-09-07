@@ -29,6 +29,8 @@ from meridian_storage.plugins.cost import (
 )
 from meridian_storage.plugins.usage import UsageAggregateV1, UsageScope, UsageWindow
 
+pytest_plugins = ("postgres_backend",)
+
 START = datetime(2026, 1, 1, tzinfo=UTC)
 END = datetime(2026, 2, 1, tzinfo=UTC)
 NOW = datetime(2026, 8, 26, tzinfo=UTC)
@@ -101,6 +103,7 @@ def _resource(value: object) -> ResourceRef:
 
 
 def _compare(actual: object, operator: object, candidate: object) -> bool:
+    operator = operator.removeprefix("$") if isinstance(operator, str) else operator
     matched = True
     if operator == "in":
         matched = actual in candidate  # type: ignore[operator]
