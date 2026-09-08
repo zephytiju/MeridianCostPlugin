@@ -4,7 +4,7 @@
 Install the exact V1 distribution:
 
 ```console
-python -m pip install meridian-plugin-cost==1.0.1
+python -m pip install meridian-plugin-cost==2.0.1
 ```
 
 Meridian discovers `CostPluginFactory` and `CostSchemaProvider` from package entry points. The
@@ -49,6 +49,14 @@ fingerprints; Cost applies the same validation and calculation path afterward.
 Construct `MeridianEvidenceSink(ready_meridian)` and pass it to `CostCalculator` to append one
 audit record and one lineage record for each persisted or replayed result. Evidence resources,
 retention, access policy, and physical placement are deployment-owned.
+
+When Evidence is required, the host supplies a sink that explicitly appends its
+receipts with `require_atomic=True` and wraps calculation in
+`ready_meridian.transaction(cost.resources.calculations)`. All participating Cost
+and Evidence Resources must resolve to that same runtime Binding. The repository's
+nested transaction joins the host boundary. Required failures must escape it;
+optional standalone sink calls do not establish atomicity. The live PostgreSQL
+regression demonstrates commit, replay and rollback after either receipt fails.
 
 Public failures are Meridian error envelopes with stable `MERIDIAN_COST_*` codes and a
 `requirement` field. No error includes credentials or physical database details.

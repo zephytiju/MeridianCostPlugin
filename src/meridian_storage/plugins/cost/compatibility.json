@@ -1,16 +1,16 @@
 {
   "$comment": "SPDX-License-Identifier: Apache-2.0",
-  "formatVersion": "meridian.cost.compatibility.v1",
+  "formatVersion": "meridian.cost.compatibility.v2",
   "package": "meridian-plugin-cost",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "repository": "zephytiju/MeridianCostPlugin",
   "python": ">=3.12,<3.15",
   "contracts": {
-    "core": "1.0.1",
-    "evidence": "1.0.1",
-    "query": "1.0.2",
-    "semantics": "2.0.0",
-    "usage": "2.0.1"
+    "core": "1.x",
+    "plugin": "1.0.0",
+    "structured.put": "2.0.0",
+    "evidence.append": "1.0.0",
+    "domainSchemas": "1.0.0"
   },
   "catalogs": {
     "owned": [],
@@ -24,8 +24,8 @@
     "catalogRevision": 70,
     "adapterRevision": 24,
     "kafkaStreamingRevision": 6,
-    "constructsRevision": 45,
-    "costLldRevision": 68
+    "constructsRevision": 113,
+    "costLldRevision": 69
   },
   "boundaries": {
     "service": false,
@@ -36,5 +36,12 @@
     "nativeQuery": false,
     "usageStorageAccess": false,
     "catalogOwnership": false
+  },
+  "dependencies": {
+    "meridian-plugin-usage": ">=2.0.2,<3",
+    "meridian-storage-core": ">=1.1.0,<2",
+    "meridian-storage-evidence": ">=1.0.2,<2",
+    "meridian-storage-query": ">=1.0.3,<2",
+    "meridian-storage-semantics": ">=2.0.1,<3"
   }
 }

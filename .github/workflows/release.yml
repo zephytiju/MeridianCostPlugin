@@ -56,9 +56,12 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-          cache-dependency-path: pyproject.toml
+          cache-dependency-path: requirements/validation.lock
       - run: python -m pip install --disable-pip-version-check pip==26.2
-      - run: python -m pip install --disable-pip-version-check -e '.[test]'
+      - run: |
+          python -m pip install --require-hashes --report validation-install.json -r requirements/validation.lock
+          python -m pip install --disable-pip-version-check -e '.[test]'
+          python -m pip check
       - name: Verify release source
         run: |
           ruff format --check .
@@ -77,7 +80,7 @@ jobs:
           wheel-smoke/bin/python -m pip install --report dist/clean-install.json dist/*.whl
           wheel-smoke/bin/python -m pip check
           wheel-smoke/bin/python -m pip freeze > dist/clean-install.lock
-          cp compatibility-tests.xml dist/
+          cp compatibility-tests.xml validation-install.json requirements/validation.lock dist/
       - name: Generate dependency SBOM
         run: >-
           cyclonedx-py environment

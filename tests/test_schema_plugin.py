@@ -6,6 +6,7 @@ from __future__ import annotations
 from importlib.metadata import entry_points, version
 
 import pytest
+from packaging.specifiers import SpecifierSet
 
 from meridian_storage.plugins.cost import (
     CostPluginFactory,
@@ -33,7 +34,7 @@ def test_schema_provider_publishes_three_cost_resources() -> None:
     }
     assert {item.ref.catalog for item in bundle.schemas} == {"structured"}
     assert bundle.extensions["distribution"] == "meridian-plugin-cost"
-    assert bundle.extensions["usageDependency"] == "meridian-plugin-usage==2.0.1"
+    assert bundle.extensions["usageDependency"] == "meridian-plugin-usage>=2.0.2,<3"
     assert bundle.fingerprint.startswith("sha256:")
 
 
@@ -52,7 +53,7 @@ def test_plugin_manifest_preserves_canonical_repository_and_boundaries() -> None
     factory = CostPluginFactory()
     manifest = factory.manifest()
     assert manifest.plugin_id == "cost"
-    assert manifest.plugin_version == "2.0.0"
+    assert manifest.plugin_version == "2.0.1"
     assert manifest.extensions["repository"] == "zephytiju/MeridianCostPlugin"
     assert manifest.extensions["distribution"] == "meridian-plugin-cost"
     assert manifest.extensions["catalog"] == "structured"
@@ -64,8 +65,8 @@ def test_plugin_manifest_preserves_canonical_repository_and_boundaries() -> None
 
 
 def test_installed_distribution_and_entry_points_are_exact() -> None:
-    assert version("meridian-plugin-cost") == "2.0.0"
-    assert version("meridian-plugin-usage") == "2.0.1"
+    assert version("meridian-plugin-cost") == "2.0.1"
+    assert version("meridian-plugin-usage") in SpecifierSet(">=2.0.2,<3")
     plugins = {item.name: item for item in entry_points(group="meridian_storage.plugins")}
     schemas = {item.name: item for item in entry_points(group="meridian_storage.schemas")}
     assert plugins["cost"].load() is CostPluginFactory
