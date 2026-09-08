@@ -10,6 +10,7 @@ import pytest
 from psycopg import connect, sql
 from psycopg.conninfo import conninfo_to_dict, make_conninfo
 
+from evidence_support import CostReceiptProvider
 from meridian_storage import Meridian, RuntimeConfig
 from meridian_storage.adapters.postgresql._settings import PostgreSQLSettings
 from meridian_storage.adapters.postgresql.descriptor import manifest
@@ -34,7 +35,7 @@ USAGE_RESOURCES = UsageResources()
 
 
 class LiveBackend:
-    def __init__(self, dsn):
+    def __init__(self, dsn, *, evidence=False):
         self.dsn = dsn
         values = conninfo_to_dict(dsn)
         self.secrets = LocalTestSecrets(
@@ -44,8 +45,13 @@ class LiveBackend:
             }
         )
         self.providers = (UsageSchemaProvider(), CostSchemaProvider())
+        self.receipts = CostReceiptProvider() if evidence else None
+        if self.receipts is not None:
+            self.providers = (*self.providers, self.receipts)
         bundles = tuple(p.load() for p in self.providers)
         docs = (*usage_schemas(), *cost_schemas())
+        if self.receipts is not None:
+            docs = (*docs, *self.receipts.documents())
         all_resources = tuple(r for b in bundles for r in b.resources)
         schema_by_ref = {s.ref: s for b in bundles for s in b.schemas}
         self.namespace = "cost_compat_" + uuid4().hex[:12]
@@ -75,7 +81,7 @@ class LiveBackend:
                 {
                     "ref": resource.ref.canonical,
                     "table": resource.ref.namespace + "_" + name,
-                    "profile": doc.semantic_kind.value,
+                    "profile": resource.profile,
                     "schemaFingerprint": schema_by_ref[resource.schema].fingerprint,
                     "resourceFingerprint": resource.fingerprint,
                     "fields": fields,
@@ -126,7 +132,9 @@ class LiveBackend:
                         "id": b.provider_id,
                         "package": "meridian-plugin-cost"
                         if b.provider_id == "cost"
-                        else "meridian-plugin-usage",
+                        else "meridian-plugin-usage"
+                        if b.provider_id == "usage"
+                        else "meridian-plugin-cost",
                         "contract": b.provider_contract_version,
                         "requiredFingerprint": b.fingerprint,
                     }
@@ -217,6 +225,7 @@ class LiveBackend:
         runtime = Meridian.from_config(
             self.config,
             secret_resolver=self.secrets,
+            schema_providers=() if self.receipts is None else (self.receipts,),
         )
         runtime.start()
         self.runtimes.append(runtime)

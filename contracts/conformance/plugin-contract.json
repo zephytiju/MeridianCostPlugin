@@ -25,13 +25,13 @@
     ]
   },
   "dependencies": {
-    "usage": "meridian-plugin-usage==2.0.1"
+    "usage": "meridian-plugin-usage>=2.0.2,<3"
   },
   "design": {
     "adapterRevision": 24,
     "catalogRevision": 70,
-    "constructsRevision": 45,
-    "costLldRevision": 68,
+    "constructsRevision": 113,
+    "costLldRevision": 69,
     "hldRevision": 56,
     "kafkaStreamingRevision": 6
   },
@@ -55,5 +55,5 @@
     "structured:cost.rate_cards",
     "structured:cost.records"
   ],
-  "version": "2.0.0"
+  "version": "2.0.1"
 }

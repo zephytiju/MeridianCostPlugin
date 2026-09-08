@@ -5,14 +5,16 @@ from __future__ import annotations
 
 import argparse
 import json
+from importlib.metadata import requires, version
 from pathlib import Path
 
+from packaging.requirements import Requirement
+
+# SBOM evidence must match the environment selected by the release hash lock.
 _RUNTIME = {
-    "meridian-plugin-usage": "2.0.1",
-    "meridian-storage-core": "1.0.1",
-    "meridian-storage-evidence": "1.0.1",
-    "meridian-storage-query": "1.0.2",
-    "meridian-storage-semantics": "2.0.0",
+    requirement.name: version(requirement.name)
+    for raw in requires("meridian-plugin-cost") or ()
+    if (requirement := Requirement(raw)).marker is None
 }
 
 
@@ -29,7 +31,7 @@ def main() -> None:
     root = metadata["component"]
     if (root.get("name"), root.get("version"), root.get("type")) != (
         "meridian-plugin-cost",
-        "2.0.0",
+        "2.0.1",
         "library",
     ):
         raise SystemExit("release SBOM root differs from the Cost distribution")
@@ -52,7 +54,7 @@ def main() -> None:
             {
                 "formatVersion": "meridian.cost.sbom-report.v1",
                 "passed": True,
-                "root": "meridian-plugin-cost@2.0.0",
+                "root": "meridian-plugin-cost@2.0.1",
                 "runtimeDependencies": _RUNTIME,
                 "specVersion": "1.6",
             },

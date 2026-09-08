@@ -7,15 +7,17 @@ import argparse
 import hashlib
 import json
 import tarfile
+import tomllib
 import zipfile
 from email.parser import BytesParser
 from email.policy import default
 from pathlib import Path, PurePosixPath
 
+from packaging.requirements import Requirement
 from packaging.specifiers import SpecifierSet
 
 PACKAGE = "meridian_plugin_cost"
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 WHEEL_REQUIRED = {
     "meridian_storage/plugins/cost/__init__.py",
     "meridian_storage/plugins/cost/compatibility.json",
@@ -32,6 +34,8 @@ SDIST_REQUIRED = {
     "contracts/conformance/plugin-contract.json",
     "docs/architecture.md",
     "pyproject.toml",
+    "requirements/validation.lock",
+    "requirements/validation-constraints.txt",
     "scripts/verify_contracts.py",
     "src/meridian_storage/plugins/cost/compatibility.json",
 }
@@ -72,8 +76,12 @@ def _verify_wheel(path: Path) -> dict[str, object]:
         if metadata["License-Expression"] != "Apache-2.0":
             _fail("wheel must publish the SPDX Apache-2.0 license expression")
         requirements = metadata.get_all("Requires-Dist", failobj=[])
-        if "meridian-plugin-usage==2.0.1" not in requirements:
-            _fail("wheel must depend on the exact released Usage distribution")
+        expected = tomllib.loads(
+            (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text()
+        )["project"]["dependencies"]
+        observed = {Requirement(raw) for raw in requirements if Requirement(raw).marker is None}
+        if observed != {Requirement(raw) for raw in expected}:
+            _fail("wheel runtime compatibility bounds differ from owned package metadata")
         package_roots = {
             "/".join(PurePosixPath(name).parts[:3])
             for name in names

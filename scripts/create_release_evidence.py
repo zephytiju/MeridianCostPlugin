@@ -17,9 +17,11 @@ _REQUIRED = {
     "clean-install.lock",
     "compatibility-tests.xml",
     "conformance-report.json",
-    "meridian_plugin_cost-2.0.0-py3-none-any.whl",
-    "meridian_plugin_cost-2.0.0.tar.gz",
+    "meridian_plugin_cost-2.0.1-py3-none-any.whl",
+    "meridian_plugin_cost-2.0.1.tar.gz",
     "sbom.cdx.json",
+    "validation-install.json",
+    "validation.lock",
 }
 
 
@@ -57,8 +59,8 @@ def main() -> None:
         "repository": "zephytiju/MeridianCostPlugin",
         "sourceCommit": arguments.source_commit,
         "tag": arguments.tag,
-        "usageDependency": "meridian-plugin-usage==2.0.1",
-        "version": "2.0.0",
+        "usageDependency": "meridian-plugin-usage>=2.0.2,<3",
+        "version": "2.0.1",
     }
     manifest_path = arguments.directory / "release-manifest.json"
     manifest_path.write_text(

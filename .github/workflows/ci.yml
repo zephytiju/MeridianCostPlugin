@@ -40,10 +40,13 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: pip
-          cache-dependency-path: pyproject.toml
+          cache-dependency-path: requirements/validation.lock
       - run: python -m pip install --disable-pip-version-check pip==26.2
       - name: Install exact development dependencies
-        run: python -m pip install --disable-pip-version-check -e '.[test]'
+        run: |
+          python -m pip install --require-hashes --report validation-install.json -r requirements/validation.lock
+          python -m pip install --disable-pip-version-check -e '.[test]'
+          python -m pip check
       - name: Verify source and typing
         run: |
           ruff format --check .
@@ -58,7 +61,10 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cost-usage-compatibility-python-${{ matrix.python }}
-          path: test-results.xml
+          path: |
+            test-results.xml
+            validation-install.json
+            requirements/validation.lock
 
   security:
     name: Security
@@ -69,9 +75,12 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-          cache-dependency-path: pyproject.toml
+          cache-dependency-path: requirements/validation.lock
       - run: python -m pip install --disable-pip-version-check pip==26.2
-      - run: python -m pip install --disable-pip-version-check -e '.[test]'
+      - run: |
+          python -m pip install --require-hashes --report validation-install.json -r requirements/validation.lock
+          python -m pip install --disable-pip-version-check -e '.[test]'
+          python -m pip check
       - run: bandit -r src -c pyproject.toml
       - run: pip-audit --skip-editable
 
@@ -87,9 +96,12 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-          cache-dependency-path: pyproject.toml
+          cache-dependency-path: requirements/validation.lock
       - run: python -m pip install --disable-pip-version-check pip==26.2
-      - run: python -m pip install --disable-pip-version-check -e '.[test]'
+      - run: |
+          python -m pip install --require-hashes --report validation-install.json -r requirements/validation.lock
+          python -m pip install --disable-pip-version-check -e '.[test]'
+          python -m pip check
       - name: Build twice
         run: |
           python -m build --no-isolation --outdir dist-a
@@ -117,13 +129,13 @@ jobs:
           wheel-smoke/bin/python -m pip install --disable-pip-version-check --report dist-a/clean-install.json dist-a/*.whl
           wheel-smoke/bin/python -m pip check
           wheel-smoke/bin/python -m pip freeze > dist-a/clean-install.lock
-          wheel-smoke/bin/python -c 'import meridian_storage.plugins.cost as cost; assert cost.__version__ == "2.0.0"'
+          wheel-smoke/bin/python -c 'import meridian_storage.plugins.cost as cost; assert cost.__version__ == "2.0.1"'
       - name: Create checksum ledger
         working-directory: dist-a
         run: sha256sum meridian_plugin_cost-* artifact-report.json conformance-report.json sbom.cdx.json clean-install.json clean-install.lock > SHA256SUMS
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: meridian-plugin-cost-2.0.0
+          name: meridian-plugin-cost-2.0.1
           path: dist-a/
           if-no-files-found: error
           retention-days: 30

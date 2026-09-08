@@ -22,7 +22,7 @@
   "properties": {
     "formatVersion": {"const": "meridian.cost.plugin.v1"},
     "package": {"const": "meridian-plugin-cost"},
-    "version": {"const": "2.0.0"},
+    "version": {"const": "2.0.1"},
     "repository": {"const": "zephytiju/MeridianCostPlugin"},
     "plugin": {
       "type": "object",
@@ -39,7 +39,7 @@
       "additionalProperties": false,
       "required": ["usage"],
       "properties": {
-        "usage": {"const": "meridian-plugin-usage==2.0.1"}
+        "usage": {"const": "meridian-plugin-usage>=2.0.2,<3"}
       }
     },
     "catalogs": {
@@ -93,8 +93,8 @@
         "catalogRevision": {"const": 70},
         "adapterRevision": {"const": 24},
         "kafkaStreamingRevision": {"const": 6},
-        "constructsRevision": {"const": 45},
-        "costLldRevision": {"const": 68}
+        "constructsRevision": {"const": 113},
+        "costLldRevision": {"const": 69}
       }
     },
     "boundaries": {

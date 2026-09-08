@@ -1,6 +1,14 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Changelog
 
+## 2.0.1 - 2026-09-08
+
+- Admit the public Core 1.1.0 / Usage 2.0.2 closure with justified compatible dependency bounds.
+- Separate API contracts and package requirements in compatibility metadata v2; retain domain
+  schemas, pricing, calculation identity and structured.put 2.0.0 requirements.
+- Lock release validation dependencies and hashes separately from runtime package metadata.
+- Keep mandatory PostgreSQL tests, reproducible artifacts, audits and published-wheel verification.
+
 ## 2.0.0 - 2026-09-07
 
 - Consume corrected released Usage 2.0.1 and its coherent dependency closure.

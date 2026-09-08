@@ -7,18 +7,19 @@ over logical Meridian Resources.
 
 This distribution is a Python library and Meridian plugin. It is not a service, a Cost Catalog,
 or an owner of a product-private database. It never opens Usage storage: normalized aggregates
-are obtained through the released `meridian-plugin-usage==2.0.1` public API. Cost data targets
+are obtained through the released `meridian-plugin-usage>=2.0.2,<3` public API. Cost data targets
 distinct `structured/cost/*` Resources; deployment IaC owns their physical placement and keeps
 Usage and Cost storage isolated.
 
 ## Install
 
 ```console
-python -m pip install meridian-plugin-cost==1.0.1
+python -m pip install meridian-plugin-cost==2.0.1
 ```
 
-Python 3.12, 3.13, and 3.14 are supported. Runtime Meridian dependencies remain pinned to their
-compatible 1.0.0 releases, while the official Usage distribution is pinned to 1.0.2.
+Python 3.12, 3.13, and 3.14 are supported. Runtime Meridian dependencies use
+compatible public API ranges with Core >=1.1.0,<2 and Usage >=2.0.2,<3.
+Exact release-validation selections and artifact hashes live in `requirements/validation.lock`.
 
 ## Define and publish a rate card
 

@@ -8,11 +8,12 @@ import hashlib
 import json
 from datetime import UTC, datetime
 from decimal import Decimal
-from importlib.metadata import entry_points, version
+from importlib.metadata import entry_points, requires, version
 from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
+from packaging.requirements import Requirement
 
 from meridian_storage.plugins.cost import (
     AllocationSpecV1,
@@ -96,10 +97,24 @@ def verify() -> dict[str, object]:
     golden = _load(golden_path)
     Draft202012Validator.check_schema(schema)
     Draft202012Validator(schema).validate(instance)
-    if version("meridian-plugin-cost") != "2.0.0":
+    if version("meridian-plugin-cost") != "2.0.1":
         raise AssertionError("installed Cost distribution version differs from released contract")
-    if version("meridian-plugin-usage") != "2.0.1":
-        raise AssertionError("released Usage dependency must be exactly 2.0.1")
+    observed = {}
+    for raw in requires("meridian-plugin-cost") or ():
+        requirement = Requirement(raw)
+        if requirement.marker is not None:
+            continue
+        installed = version(requirement.name)
+        if installed not in requirement.specifier:
+            raise AssertionError(f"installed dependency violates {requirement}")
+        if (
+            requirement.specifier
+            != Requirement(
+                requirement.name + compatibility["dependencies"][requirement.name]
+            ).specifier
+        ):
+            raise AssertionError(f"compatibility metadata differs for {requirement.name}")
+        observed[requirement.name] = installed
     manifest = CostPluginFactory().manifest()
     if manifest.extensions["repository"] != instance["repository"]:
         raise AssertionError("plugin manifest repository differs from the canonical contract")
@@ -129,9 +144,10 @@ def verify() -> dict[str, object]:
         "package": "meridian-plugin-cost",
         "passed": True,
         "repository": "zephytiju/MeridianCostPlugin",
-        "usageDependency": "meridian-plugin-usage==2.0.1",
+        "usageDependency": "meridian-plugin-usage>=2.0.2,<3",
+        "observedDependencies": observed,
         "vectors": vectors,
-        "version": "2.0.0",
+        "version": "2.0.1",
     }
 
 

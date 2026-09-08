@@ -279,14 +279,14 @@ class CostSchemaProvider:
             extensions={
                 "distribution": "meridian-plugin-cost",
                 "catalog": "structured",
-                "usageDependency": "meridian-plugin-usage==2.0.1",
+                "usageDependency": "meridian-plugin-usage>=2.0.2,<3",
                 "design": {
                     "hldRevision": 56,
                     "catalogRevision": 70,
                     "adapterRevision": 24,
                     "kafkaStreamingRevision": 6,
-                    "constructsRevision": 45,
-                    "costLldRevision": 68,
+                    "constructsRevision": 113,
+                    "costLldRevision": 69,
                 },
             },
         )
